@@ -186,6 +186,7 @@ class Server(Worker):
 
         # inject noise before broadcast
         self._noise_injector = None
+        self.trust_metric_manager = kwargs['trust_metric_manager']
 
     @property
     def client_num(self):
@@ -670,6 +671,13 @@ class Server(Worker):
         if filter_unseen_clients:
             # restore the state of the unseen clients within sampler
             self.sampler.change_state(self.unseen_clients_id, 'seen')
+
+        if msg_type == 'model_para':
+            # register client selection for federatedTrust
+            self.trust_metric_manager.gather_stats(stats_key="client_selection",
+                                                   stats_info={"clients": receiver,
+                                                               "total_round_num": self.total_round_num,
+                                                               "round": self.state})
 
     def broadcast_client_address(self):
         """

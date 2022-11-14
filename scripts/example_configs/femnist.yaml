@@ -3,10 +3,12 @@ device: 0
 early_stop:
   patience: 5
 seed: 12345
+expname: unweighted_exp_5
 federate:
   mode: standalone
   total_round_num: 300
   sample_client_rate: 0.2
+  save_to: exp/unweighted_exp_5/model
 data:
   root: data/
   type: femnist
@@ -33,4 +35,4 @@ trainer:
   type: cvtrainer
 eval:
   freq: 10
-  metrics: ['acc', 'correct']
+  metrics: ['acc', 'correct', 'feature_importance_cv', 'clever']

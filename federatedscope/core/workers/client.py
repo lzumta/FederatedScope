@@ -71,6 +71,11 @@ class Client(Worker):
                                    is_attacker=self.is_attacker,
                                    monitor=self._monitor)
 
+        self.trust_metric_manager = kwargs['trust_metric_manager']
+        self.trust_metric_manager.gather_stats(stats_key="class_distribution",
+                                               stats_info={"client_id": ID,
+                                                           "dataloader": data['train']})
+
         # For client-side evaluation
         self.best_results = dict()
         self.history_results = dict()

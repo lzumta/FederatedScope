@@ -5,11 +5,16 @@ import heapq
 
 import numpy as np
 
+import os
+
+
 from federatedscope.core.workers import Server, Client
 from federatedscope.core.gpu_manager import GPUManager
 from federatedscope.core.auxiliaries.model_builder import get_model
 from federatedscope.core.auxiliaries.data_builder import merge_data
 from federatedscope.core.auxiliaries.utils import get_resource_info
+
+from federatedTrust.metric import TrustMetricManager
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +55,9 @@ class FedRunner(object):
         self.gpu_manager = GPUManager(gpu_available=self.cfg.use_gpu,
                                       specified_device=self.cfg.device)
 
+        # set up TrustMetricManager
+        self.trust_metric_manager = TrustMetricManager(os.path.join(os.getcwd(), config.outdir))
+
         self.unseen_clients_id = []
         if self.cfg.federate.unseen_clients_rate > 0:
             self.unseen_clients_id = np.random.choice(
@@ -71,8 +79,15 @@ class FedRunner(object):
             trainer_representative = self.client[1].trainer
             if trainer_representative is not None:
                 trainer_representative.print_trainer_meta_info()
+                self.trust_metric_manager.populate_factsheet(trainer_context=trainer_representative.ctx)
         elif self.mode == 'distributed':
             self._setup_for_distributed()
+
+        self.trust_metric_manager.populate_factsheet(cfg_file="config.yaml")
+        self.trust_metric_manager.gather_stats(stats_key="client_selection",
+                                               stats_info={"clients": self.client,
+                                                           "total_round_num": config.federate.total_round_num,
+                                                           "round": -1})
 
     def _setup_for_standalone(self):
         """
@@ -199,6 +214,10 @@ class FedRunner(object):
                 self._run_simulation()
 
             self.server._monitor.finish_fed_runner(fl_mode=self.mode)
+            self.trust_metric_manager.populate_factsheet(eval_results_file="eval_results.log",
+                                                         system_metrics_file="system_metrics.log",
+                                                         stats_file="statistics.json")
+            self.trust_metric_manager.evaluate()
 
             return self.server.best_results
 
@@ -324,6 +343,9 @@ class FedRunner(object):
             raise ValueError('Mode {} is not provided'.format(
                 self.cfg.mode.type))
 
+        if self.trust_metric_manager is not None:
+            kw.update({'trust_metric_manager': self.trust_metric_manager})
+
         if self.server_class:
             self._server_device = self.gpu_manager.auto_choice()
             server = self.server_class(
@@ -372,6 +394,9 @@ class FedRunner(object):
         else:
             raise ValueError('Mode {} is not provided'.format(
                 self.cfg.mode.type))
+
+        if self.trust_metric_manager is not None:
+            kw.update({'trust_metric_manager': self.trust_metric_manager})
 
         if self.client_class:
             client_specific_config = self.cfg.clone()

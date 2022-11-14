@@ -1,0 +1,61 @@
+{
+  "project": {
+    "overview": "unweighted_exp_4",
+    "purpose": "",
+    "background": ""
+  },
+  "data": {
+    "provenance": "femnist",
+    "preprocessing": [
+      [
+        "ToTensor",
+        {}
+      ],
+      [
+        "Normalize",
+        {
+          "mean": [
+            0.1307
+          ],
+          "std": [
+            0.3081
+          ]
+        }
+      ]
+    ],
+    "avg_entropy": 0.5847228374416231
+  },
+  "participants": {
+    "client_num": 100,
+    "sample_client_rate": 0.6,
+    "client_selector": "uniform"
+  },
+  "configuration": {
+    "optimization_algorithm": "FedAvg",
+    "training_model": "CNN",
+    "personalization": false,
+    "differential_privacy": true,
+    "dp_epsilon": 6.0,
+    "trainable_param_num": 12,
+    "total_round_num": 50,
+    "learning_rate": 0.01,
+    "local_update_steps": 1
+  },
+  "performance": {
+    "test_loss_avg": 102.58600244998932,
+    "test_acc_avg": 0.4848791024810377,
+    "test_feature_importance_cv": 1,
+    "test_clever": 0.08122554218575757
+  },
+  "fairness": {
+    "test_acc_cv": 0.34248567862766066,
+    "selection_cv": 0.11822765233978803,
+    "class_imbalance": 1
+  },
+  "system": {
+    "avg_time_minutes": 112.57035113333332,
+    "avg_model_size": "6.24M",
+    "avg_upload_bytes": "367.34K",
+    "avg_download_bytes": "367.33K"
+  }
+}

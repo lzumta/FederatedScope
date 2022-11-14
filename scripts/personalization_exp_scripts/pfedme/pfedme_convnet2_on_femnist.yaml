@@ -3,10 +3,12 @@ device: 0
 early_stop:
   patience: 5
 seed: 2
+expname: unweighted_exp_7
 federate:
   mode: standalone
-  total_round_num: 300
+  total_round_num: 100
   sample_client_rate: 0.2
+  save_to: exp/unweighted_exp_7/model
 data:
   root: data/
   type: femnist

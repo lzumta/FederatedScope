@@ -79,8 +79,8 @@ class GeneralTorchTrainer(Trainer):
         self.ctx.model.load_state_dict(merged_param, strict=strict)
 
     def evaluate(self, target_data_split_name="test"):
-        with torch.no_grad():
-            super(GeneralTorchTrainer, self).evaluate(target_data_split_name)
+        # with torch.no_grad():
+        super(GeneralTorchTrainer, self).evaluate(target_data_split_name)
 
         return self.ctx.eval_metrics
 
