@@ -21,7 +21,7 @@ def compute_clever_metric(ctx, **kwargs):
             try:
                 factsheet = json.load(f)
                 test_clever = get_value_from_path(factsheet, "performance/test_clever")
-                if np.isnan(test_clever):
+                if not test_clever:
                     x = ctx.data[ctx.cur_split]
                     test_sample = next(iter(x))
                     nb_classes = ctx.cfg['model']['out_channels']

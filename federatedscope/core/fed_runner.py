@@ -217,7 +217,7 @@ class FedRunner(object):
             self.trust_metric_manager.populate_factsheet(eval_results_file="eval_results.log",
                                                          system_metrics_file="system_metrics.log",
                                                          stats_file="statistics.json")
-            self.trust_metric_manager.evaluate()
+            self.trust_metric_manager.evaluate(use_weights=True)
 
             return self.server.best_results
 

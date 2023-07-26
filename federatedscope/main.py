@@ -23,17 +23,22 @@ if os.environ.get('http_proxy'):
 
 if __name__ == '__main__':
     init_cfg = global_cfg.clone()
-    args = parse_args()
-    if args.cfg_file:
-        init_cfg.merge_from_file(args.cfg_file)
-    init_cfg.merge_from_list(args.opts)
+    #args = parse_args()
+    #if args.cfg_file:
+    cfg_file = 'C:\\Users\\zumta\\OneDrive\\Dokumente\\school\\UZH\\Master Thesis\\FederatedScope\\federatedTrust\\example\\config.yaml'
+    cfg_file = 'C:\\Users\\zumta\\OneDrive\\Dokumente\\school\\UZH\\Master Thesis\\FederatedScope\\federatedTrust\\example\\femnist.yaml'
+
+    init_cfg.merge_from_file(cfg_file)
+    #init_cfg.merge_from_list(args.opts)
+
+    client_cfg_file = None
 
     update_logger(init_cfg, clear_before_add=True)
     setup_seed(init_cfg.seed)
 
     # load clients' cfg file
-    client_cfg = CfgNode.load_cfg(open(args.client_cfg_file,
-                                       'r')) if args.client_cfg_file else None
+    client_cfg = CfgNode.load_cfg(open(client_cfg_file,
+                                       'r')) if client_cfg_file else None
 
     # federated dataset might change the number of clients
     # thus, we allow the creation procedure of dataset to modify the global
@@ -48,4 +53,10 @@ if __name__ == '__main__':
                        client_class=get_client_cls(init_cfg),
                        config=init_cfg.clone(),
                        client_config=client_cfg)
+
+
+
+
     _ = runner.run()
+
+    print('Finished')

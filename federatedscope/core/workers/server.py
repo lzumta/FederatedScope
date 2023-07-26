@@ -6,6 +6,9 @@ import sys
 import numpy as np
 import pickle
 
+import pandas as pd
+from federatedTrust.calculation import stop_emissionstracking_and_save
+
 from federatedscope.core.monitors.early_stopper import EarlyStopper
 from federatedscope.core.message import Message
 from federatedscope.core.communication import StandaloneCommManager, \
@@ -17,7 +20,8 @@ from federatedscope.core.auxiliaries.utils import merge_dict, Timeout, \
     merge_param_dict
 from federatedscope.core.auxiliaries.trainer_builder import get_trainer
 from federatedscope.core.secret_sharing import AdditiveSecretSharing
-
+from codecarbon import EmissionsTracker
+from os.path import exists
 logger = logging.getLogger(__name__)
 
 
@@ -314,7 +318,12 @@ class Server(Worker):
         if self.check_buffer(self.state, min_received_num, check_eval_result):
             if not check_eval_result:
                 # Receiving enough feedback in the training process
+
+                # track aggreagtion emissions
+                tracker = EmissionsTracker(tracking_mode='process', log_level='error', save_to_file=False)
+                tracker.start()
                 aggregated_num = self._perform_federated_aggregation()
+                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, self.ID, 'server', 'aggregation')
 
                 self.state += 1
                 if self.state % self._cfg.eval.freq == 0 and self.state != \

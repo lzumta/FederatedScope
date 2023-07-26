@@ -34,7 +34,7 @@ def setup_seed(seed):
         torch.backends.cudnn.deterministic = True
     else:
         import tensorflow as tf
-        tf.set_random_seed(seed)
+        tf.random.set_seed(seed)
 
 
 def get_dataset(type, root, transform, target_transform, download=True):

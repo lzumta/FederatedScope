@@ -1,7 +1,11 @@
 import copy
 import logging
+import os
 import sys
 import pickle
+import pandas as pd
+from os.path import exists
+from federatedTrust.calculation import stop_emissionstracking_and_save
 
 from federatedscope.core.message import Message
 from federatedscope.core.communication import StandaloneCommManager, \
@@ -12,6 +16,7 @@ from federatedscope.core.auxiliaries.trainer_builder import get_trainer
 from federatedscope.core.secret_sharing import AdditiveSecretSharing
 from federatedscope.core.auxiliaries.utils import merge_dict, \
     calculate_time_cost
+from codecarbon import EmissionsTracker
 
 logger = logging.getLogger(__name__)
 
@@ -307,7 +312,14 @@ class Client(Worker):
                         f"early stopped. "
                         f"The next FL update may result in negative effect")
                     self._monitor.local_converged()
+
+                # track training emissions
+                # track emissions
+                tracker = EmissionsTracker(tracking_mode='process', log_level='error', save_to_file=False)
+                tracker.start()
                 sample_size, model_para_all, results = self.trainer.train()
+                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, self.ID, 'client', 'training', sample_size)
+
                 if self._cfg.federate.share_local_model and not \
                         self._cfg.federate.online_aggr:
                     model_para_all = copy.deepcopy(model_para_all)
