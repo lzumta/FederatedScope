@@ -24,11 +24,10 @@ if os.environ.get('http_proxy'):
 if __name__ == '__main__':
     init_cfg = global_cfg.clone()
     args = parse_args()
-    #if args.cfg_file:
-    cfg_file = 'C:\\Users\\zumta\\OneDrive\\Dokumente\\school\\UZH\\Master Thesis\\FederatedScope\\federatedTrust\\configs\\config.yaml'
+    if args.cfg_file:
+        init_cfg.merge_from_file(args.cfg_file)
 
-    init_cfg.merge_from_file(cfg_file)
-    #init_cfg.merge_from_list(args.opts)
+    init_cfg.merge_from_file(args.opts)
 
     client_cfg_file = None
 
