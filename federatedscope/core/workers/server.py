@@ -323,7 +323,7 @@ class Server(Worker):
                 tracker = EmissionsTracker(tracking_mode='process', log_level='error', save_to_file=False)
                 tracker.start()
                 aggregated_num = self._perform_federated_aggregation()
-                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, self.ID, 'server', 'aggregation')
+                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, 'server', 'aggregation')
 
                 self.state += 1
                 if self.state % self._cfg.eval.freq == 0 and self.state != \

@@ -1,7 +1,7 @@
 {
   "robustness": {
     "resilience_to_attacks": {
-      "weight": 0.4,
+      "weight": 0.3333,
       "metrics": {
         "certified_robustness": {
           "inputs": [
@@ -13,13 +13,13 @@
           "operation": "get_value",
           "score_function": "get_range_score",
           "type": "true_score",
-          "description": "Cross Lipschitz Extreme Value for nEtwork Robustness: attack-agnostic estimator of the lower bound βL",
+          "description": "Cross Lipschitz Extreme Value for network Robustness: attack-agnostic estimator of the lower bound βL",
           "weight": 1
         }
       }
     },
     "algorithm_robustness": {
-      "weight": 0.4,
+      "weight": 0.33333,
       "metrics": {
         "performance": {
           "inputs": [
@@ -32,7 +32,7 @@
           "score_function": "get_true_score",
           "type": "true_score",
           "description": "Average test accuracy of the global model on clients test data.",
-          "weight": 0.8
+          "weight": 0.5
         },
         "personalization": {
           "inputs": [
@@ -44,12 +44,12 @@
           "operation": "get_value",
           "type": "true_score",
           "description": "The use of personalized FL algorithm.",
-          "weight": 0.2
+          "weight": 0.5
         }
       }
     },
     "client_reliability": {
-      "weight": 0.2,
+      "weight": 0.3333,
       "metrics": {
         "scale": {
           "inputs": [
@@ -74,14 +74,14 @@
             10e9
           ],
           "description": "The number of clients in the model.",
-          "weight": 1
+          "weight": 0.5
         }
       }
     }
   },
   "privacy": {
     "technique": {
-      "weight": 0.2,
+      "weight": 0.333,
       "metrics": {
         "differential_privacy": {
           "inputs": [
@@ -98,7 +98,7 @@
       }
     },
     "uncertainty": {
-      "weight": 0.6,
+      "weight": 0.3333,
       "metrics": {
         "entropy": {
           "inputs": [
@@ -115,7 +115,7 @@
       }
     },
     "indistinguishability": {
-      "weight": 0.2,
+      "weight": 0.3333,
       "metrics": {
         "global_privacy_risk": {
           "inputs": [
@@ -143,7 +143,7 @@
   },
   "fairness": {
     "selection_fairness": {
-      "weight": 0.4,
+      "weight": 0.3333,
       "metrics": {
         "selection_variation": {
           "inputs": [
@@ -161,7 +161,7 @@
       }
     },
     "performance_fairness": {
-      "weight": 0.4,
+      "weight": 0.333,
       "metrics": {
         "accuracy_variation": {
           "inputs": [
@@ -179,7 +179,7 @@
       }
     },
     "class_distribution": {
-      "weight": 0.2,
+      "weight": 0.333,
       "metrics": {
         "class_imbalance": {
           "inputs": [
@@ -199,7 +199,7 @@
   },
   "explainability": {
     "interpretability": {
-      "weight": 0.4,
+      "weight": 0.3333,
       "metrics": {
         "algorithmic_transparency": {
           "inputs": [
@@ -226,9 +226,10 @@
             "CNN": 1
           },
           "description": "Mapping of Learning techniques to the level of explainability based on on literature research and qualitative analysis of each learning technique.",
-          "weight": 0.6
+          "weight": 1
         },
         "model_size": {
+          "weight": 0.333,
           "inputs": [
             {
               "source": "factsheet",
@@ -245,12 +246,12 @@
             100
           ],
           "description": "Ranges of how to map model size to a score from 1-5.",
-          "weight": 0.4
+          "weight": 1
         }
       }
     },
     "post_hoc_methods": {
-      "weight": 0.6,
+      "weight": 0.3333,
       "metrics": {
         "feature_importance": {
           "inputs": [
@@ -309,7 +310,7 @@
           "operation": "check_properties",
           "type": "property_check",
           "description": "Participants information.",
-          "weight": 0.2
+          "weight": 0.1
         },
         "data": {
           "inputs": [
@@ -329,7 +330,7 @@
           "operation": "check_properties",
           "type": "property_check",
           "description": "Meta data about the data.",
-          "weight": 0.2
+          "weight": 0.1
         },
         "configuration": {
           "inputs": [
@@ -448,7 +449,7 @@
   },
   "architectural_soundness": {
     "client_management": {
-      "weight": 0.4,
+      "weight": 0.5,
       "metrics": {
         "client_selector": {
           "inputs": [
@@ -465,7 +466,7 @@
       }
     },
     "optimization": {
-      "weight": 0.6,
+      "weight": 0.5,
       "metrics": {
         "algorithm": {
           "inputs": [

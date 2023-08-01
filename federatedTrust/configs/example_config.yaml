@@ -3,20 +3,20 @@ device: 0
 early_stop:
   patience: 5
 seed: 12345
-expname: final
+outdir: ../federatedTrust/experiments
+expname: evaluation
 federate:
   mode: standalone
-  client_num: 2
-  total_round_num: 2
-  sample_client_rate: 1
-  sample_client_num: 2
-  save_to: exp/final/model
+  client_num: 300
+  total_round_num: 50
+  sample_client_rate: 0.3
+  save_to: ../federatedTrust/experiments/evaluation/model
 data:
   root: data/
   type: femnist
   splits: [0.6,0.2,0.2]
-  batch_size: 10
-  subsample: 0.05
+  batch_size: 50
+  subsample: 0.5
   num_workers: 0
   transform: [['ToTensor'], ['Normalize', {'mean': [0.1307], 'std': [0.3081]}]]
 model:
@@ -24,10 +24,10 @@ model:
   hidden: 2048
   out_channels: 62
 train:
-  local_update_steps: 10
+  local_update_steps: 1
   batch_or_epoch: epoch
   optimizer:
-    lr: 0.01
+    lr: 0.001
     weight_decay: 0.0
 grad:
   grad_clip: 5.0
@@ -36,5 +36,9 @@ criterion:
 trainer:
   type: cvtrainer
 eval:
+  count_flops: false
   freq: 10
   metrics: ['acc', 'correct', 'feature_importance_cv', 'clever']
+nbafl:
+  use: true
+  epsilon : 10

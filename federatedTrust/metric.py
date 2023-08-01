@@ -178,7 +178,7 @@ class TrustMetricManager:
                     entropy_distribution = status["entropy_distribution"]
                     if entropy_distribution is not None:
                         logger.info("FactSheet: Populating client entropy results")
-                        normalized_arr = get_normalized_scores([x for x in entropy_distribution.values()])
+                        normalized_arr = get_normalized_scores([x for x in entropy_distribution.values()][0:-1])
                         factsheet['data']['avg_entropy'] = self.check_field_filled(factsheet,['data','avg_entropy'] ,np.mean(normalized_arr) or 0, 0)
 
                     if emissions is not None:

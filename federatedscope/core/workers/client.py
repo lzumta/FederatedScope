@@ -318,7 +318,7 @@ class Client(Worker):
                 tracker = EmissionsTracker(tracking_mode='process', log_level='error', save_to_file=False)
                 tracker.start()
                 sample_size, model_para_all, results = self.trainer.train()
-                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, self.ID, 'client', 'training', sample_size)
+                stop_emissionstracking_and_save(tracker, self.trust_metric_manager.outdir, self.trust_metric_manager.emissions_file, 'client', 'training', sample_size)
 
                 if self._cfg.federate.share_local_model and not \
                         self._cfg.federate.online_aggr:

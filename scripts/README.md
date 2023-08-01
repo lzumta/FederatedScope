@@ -35,7 +35,7 @@ Train ConvNet on FEMNIST with vanilla FedAvg:
 cd ..
 python federatedscope/main.py --cfg federatedscope/cv/baseline/fedavg_convnet2_on_femnist.yaml
 # or 
-# python federatedscope/main.py --cfg scripts/example_configs/femnist.yaml
+# python federatedscope/main.py --cfg scripts/example_configs/example_config.yaml
 ```
 
 Train ConvNet on CelebA with vanilla FedAvg:

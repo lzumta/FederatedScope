@@ -21,7 +21,7 @@ def compute_feature_importance_cv_metric(ctx, **kwargs):
             try:
                 factsheet = json.load(f)
                 cv = get_value_from_path(factsheet, "performance/test_feature_importance_cv")
-                if not cv:
+                if cv == "":
                     x = ctx.data[ctx.cur_split]
                     batch_size = ctx.cfg['data']['batch_size']
                     test_sample = next(iter(x))

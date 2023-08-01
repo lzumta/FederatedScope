@@ -10,21 +10,21 @@
 		"avg_entropy": ""
 	},
 	"participants": {
-		"client_num": "",
+		"client_num": 10e6,
 		"sample_client_rate": "",
 		"client_selector": "",
-		"avg_dataset_size": ""
+		"avg_dataset_size": 1000
 	},
 	"configuration": {
 		"optimization_algorithm": "",
 		"training_model": "",
-		"personalization": "",
+		"personalization": true,
 		"differential_privacy": "",
-		"dp_epsilon": "",
+		"dp_epsilon": 100,
 		"trainable_param_num": "",
-		"total_round_num": "",
+		"total_round_num": 10e6,
 		"learning_rate": "",
-		"local_update_steps": ""
+		"local_update_steps": 100
 	},
 	"performance": {
 		"test_loss_avg": "",
@@ -47,8 +47,8 @@
 	},
 
 	"sustainability": {
-		"avg_carbon_intensity_server": "",
-		"avg_carbon_intensity_clients": "",
+		"avg_carbon_intensity_server": 709,
+		"avg_carbon_intensity_clients": 709,
 		"avg_power_performance_clients": "",
 		"avg_power_performance_server": "",
 		"emissions_training": "",

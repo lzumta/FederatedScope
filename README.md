@@ -166,9 +166,9 @@ Here we demonstrate how to run a standard FL task with FederatedScope, with sett
 
 ```bash
 # Run with default configurations
-python federatedscope/main.py --cfg scripts/example_configs/femnist.yaml
+python federatedscope/main.py --cfg scripts/example_configs/example_config.yaml
 # Or with custom configurations
-python federatedscope/main.py --cfg scripts/example_configs/femnist.yaml federate.total_round_num 50 data.batch_size 128
+python federatedscope/main.py --cfg scripts/example_configs/example_config.yaml federate.total_round_num 50 data.batch_size 128
 ```
 
 Then you can observe some monitored metrics during the training process as:

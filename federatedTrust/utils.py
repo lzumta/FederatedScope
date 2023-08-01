@@ -231,7 +231,7 @@ def convert_string_to_number(number:str):
         return num * 10**6
     elif magnitude == 'B':
         return num * 10**9
-    elif magniute == 'T':
+    elif magnitude == 'T':
         return num * 10**12
     else:
         logger.warning(f"This magnitude of the number {number} is not implemented.")

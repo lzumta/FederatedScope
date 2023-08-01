@@ -6,7 +6,6 @@ from math import e
 from os.path import exists
 import pandas as pd
 import codecarbon
-from codecarbon import EmissionsTracker
 import numpy as np
 import shap
 import torch.nn
@@ -29,7 +28,7 @@ def get_mapped_score(score_key, score_map):
         :param score_map: the defined score map
         :return: normalized score of [0, 1]
     """
-    score = 0;
+    score = 0
     if score_map is None:
         logger.warning("Score map is missing")
     else:
@@ -53,8 +52,9 @@ def get_range_score(value, ranges, direction='asc'):
         :param direction: asc means the higher the range the higher the score, desc means otherwise
         :return: normalized score of [0, 1]
     """
-    if np.isnan(value):
+    if not (type(value) == int or type(value)== float):
         logger.warning("Input value is not a number")
+        logger.warning(f"{value}")
         return 0
     else:
         score = 0
@@ -101,6 +101,7 @@ def get_true_score(value, direction):
     else:
         if not(type(value) == int or type(value) == float):
             logger.warning("Input value is not a number")
+            logger.warning(f"{value}.")
             return 0
         else:
             if direction == 'desc':
@@ -161,24 +162,30 @@ def get_feature_importance_cv(test_sample, model, cfg):
        :param cfg: configs
        :return: the coefficient of variation of the feature importance scores, [0, 1]
     """
-    cv = 0
-    batch_size = cfg['batch_size']
-    device = cfg['device']
-    if isinstance(model, torch.nn.Module):
-        batched_data, _ = test_sample
+    try:
+        cv = 0
+        batch_size = cfg['batch_size']
+        device = cfg['device']
+        if isinstance(model, torch.nn.Module):
+            batched_data, _ = test_sample
 
-        n = batch_size
-        m = math.floor(0.8 * n)
+            n = batch_size
+            m = math.floor(0.8 * n)
 
-        background = batched_data[:m].to(device)
-        test_data = batched_data[m:n].to(device)
+            background = batched_data[:m].to(device)
+            test_data = batched_data[m:n].to(device)
 
-        e = shap.DeepExplainer(model, background)
-        shap_values = e.shap_values(test_data)
-        if shap_values is not None and len(shap_values) > 0:
-            sums = np.array([shap_values[i].sum() for i in range(len(shap_values))])
-            abs_sums = np.absolute(sums)
-            cv = variation(abs_sums)
+            e = shap.DeepExplainer(model, background)
+            shap_values = e.shap_values(test_data)
+            if shap_values is not None and len(shap_values) > 0:
+                sums = np.array([shap_values[i].sum() for i in range(len(shap_values))])
+                abs_sums = np.absolute(sums)
+                cv = variation(abs_sums)
+    except Exception as e:
+        logger.warning("Could not compute feature importance CV with shap")
+        cv = 0
+    if math.isnan(cv):
+        cv = 0
     return cv
 
 
@@ -222,8 +229,9 @@ def get_scaled_score(value, scale:list,  direction:str):
     except Exception as e:
         logger.warning("Score minimum or score maximum is missing. The minimum has been set to 0 and the maximum to 1")
         value_min, value_max = 0,1
+    if not value:
+        logger.warning("Score value is missing. Set value to zero")
     else:
-        value_min, value_max = scale[0], scale[1]
         low, high = 0, 1
         if value >= value_max:
             score = 1
@@ -240,7 +248,15 @@ def get_scaled_score(value, scale:list,  direction:str):
     return score
 
 
-def stop_emissionstracking_and_save(tracker: codecarbon.EmissionsTracker, outdir: str, emissions_file: str, id: int,  role: str, workload: str, sample_size: int = 0):
+def stop_emissionstracking_and_save(tracker: codecarbon.EmissionsTracker, outdir: str, emissions_file: str, role: str, workload: str, sample_size: int = 0):
+    """ Stops emissions tracking object from CodeCarbon and saves relevant information to emissions.csv file
+    :param tracker: codecarbon.EmissionsTacker: the emissions tracker object holding information
+    :param outdir: str: the path of the output directory of the experiment
+    :param emissions_file: str: the path to the emissions file
+    :param role: str: either client or server depending on the role
+    :param workload: str: either aggregation or training depending on the workload
+    :param sample_size: int: the number of samples used for training, if aggregation 0
+    """
     tracker.stop()
 
     emissions_file = os.path.join(outdir, emissions_file)
