@@ -7,9 +7,9 @@ __version__ = '0.2.0'
 URL = 'https://github.com/alibaba/FederatedScope'
 
 minimal_requires = [
-    'numpy<1.23.0', 'scikit-learn==1.0.2', 'scipy==1.7.3', 'pandas',
-    'grpcio>=1.45.0', 'grpcio-tools', 'pyyaml>=5.1', 'fvcore', 'iopath',
-    'wandb', 'tensorboard', 'tensorboardX', 'pympler', 'protobuf==3.19.4'
+    'adversarial-robustness-toolbox == 1.14.1','codecarbon == 2.2.1','dotmap == 1.3.30','numpy==1.22.4', 'scikit-learn==1.0.2', 'scipy==1.7.3', 'pandas ==  == 2.0.1','hashids == 1.3.1',
+    'grpcio==1.55.0', 'grpcio-tools','protobuf == 3.19.4','pympler == 1.0.1', 'pyyaml==6.0', 'fvcore', 'iopath',
+    'wandb==0.15.3','scikit-learn == 1.1.3','scipy ==1.7.3','shape == 0.41.0','tabulate == 0.9.0', 'tensorboard', 'tensorboardX','tensorflow == 2.12.0','torch == 2.0.1', 'pympler', 'protobuf==3.19.4'
 ]
 
 test_requires = []
@@ -24,7 +24,7 @@ benchmark_hpo_requires = [
 
 benchmark_htl_requires = ['learn2learn']
 
-with open("README.md", "r") as fh:
+with open("federatedscope/README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(

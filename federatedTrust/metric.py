@@ -57,10 +57,10 @@ class TrustMetricManager:
         fh.setFormatter(logger_formatter)
         root_logger.addHandler(fh)
 
-    def check_field_filled(self, factsheet_dict, factsheet_path, value, empty):
+    def check_field_filled(self, factsheet_dict, factsheet_path, value, empty=""):
         if factsheet_dict[factsheet_path[0]][factsheet_path[1]]:
             return factsheet_dict[factsheet_path[0]][factsheet_path[1]]
-        elif value:
+        elif value != empty:
             return value
         else:
             return empty
@@ -122,9 +122,9 @@ class TrustMetricManager:
                     # set configuration
                     factsheet['configuration']['optimization_algorithm'] = self.check_field_filled(factsheet,['configuration','optimization_algorithm'],cfg.federate.method, "")
                     factsheet['configuration']['training_model'] = self.check_field_filled(factsheet,['configuration','training_model'],model_map[cfg.model.type], "")
-                    factsheet['configuration']['personalization'] = self.check_field_filled(factsheet,['configuration','personalization'],True if (cfg.personalization != {} and cfg.personalization.local_param != []) else False, False)
-                    factsheet['configuration']['differential_privacy'] = self.check_field_filled(factsheet,['configuration','differential_privacy'],cfg.nbafl.use,False)
-                    factsheet['configuration']['dp_epsilon'] = self.check_field_filled(factsheet,['configuration','dp_epsilon'],cfg.nbafl.epsilon, False)
+                    factsheet['configuration']['personalization'] = self.check_field_filled(factsheet,['configuration','personalization'],True if (cfg.personalization != {} and cfg.personalization.local_param != []) else False, "")
+                    factsheet['configuration']['differential_privacy'] = self.check_field_filled(factsheet,['configuration','differential_privacy'],cfg.nbafl.use,"")
+                    factsheet['configuration']['dp_epsilon'] = self.check_field_filled(factsheet,['configuration','dp_epsilon'],cfg.nbafl.epsilon, "")
                     factsheet['configuration']['total_round_num'] = self.check_field_filled(factsheet,['configuration','total_round_num'],cfg.federate.total_round_num, "")
                     factsheet['configuration']['learning_rate'] = self.check_field_filled(factsheet,['configuration','learning_rate'],cfg.train.optimizer.lr, "")
                     factsheet['configuration']['local_update_steps'] = self.check_field_filled(factsheet,['configuration','local_update_steps'],cfg.train.local_update_steps, "")
@@ -173,13 +173,13 @@ class TrustMetricManager:
                         logger.info("FactSheet: Populating client selection results")
                         selections = [x for x in client_selection.values() if type(x) in [int, float]]
                         selection_cv = get_cv(list=selections)
-                        factsheet['fairness']['selection_cv'] = self.check_field_filled(factsheet, ['fairness','selection_cv'],1 if selection_cv > 1 else selection_cv, 0)
+                        factsheet['fairness']['selection_cv'] = self.check_field_filled(factsheet, ['fairness','selection_cv'],1 if selection_cv > 1 else selection_cv, "")
 
                     entropy_distribution = status["entropy_distribution"]
                     if entropy_distribution is not None:
                         logger.info("FactSheet: Populating client entropy results")
                         normalized_arr = get_normalized_scores([x for x in entropy_distribution.values()][0:-1])
-                        factsheet['data']['avg_entropy'] = self.check_field_filled(factsheet,['data','avg_entropy'] ,np.mean(normalized_arr) or 0, 0)
+                        factsheet['data']['avg_entropy'] = self.check_field_filled(factsheet,['data','avg_entropy'] ,np.mean(normalized_arr) or 0, "")
 
                     if emissions is not None:
                         logger.info("FactSheet: Populating emissions")

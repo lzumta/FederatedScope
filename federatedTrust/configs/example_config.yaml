@@ -7,11 +7,12 @@ outdir: ../federatedTrust/experiments
 expname: evaluation
 federate:
   mode: standalone
-  client_num: 300
-  total_round_num: 50
-  sample_client_rate: 0.3
+  client_num: 10
+  total_round_num: 2
+  sample_client_rate: 1
   save_to: ../federatedTrust/experiments/evaluation/model
 data:
+  consistent_label_distribution: false
   root: data/
   type: femnist
   splits: [0.6,0.2,0.2]
