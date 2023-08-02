@@ -46,7 +46,7 @@ data:
   - 0.5
   - 0.5
   - 0.5
-  consistent_label_distribution: false
+  consistent_label_distribution: true
   drop_last: false
   graphsaint:
     num_steps: 30
@@ -92,7 +92,7 @@ early_stop:
   the_smaller_the_better: true
 eval:
   best_res_update_round_wise_key: val_loss
-  count_flops: true
+  count_flops: false
   freq: 10
   metrics:
   - acc
@@ -111,7 +111,7 @@ eval:
 expname: evaluation
 expname_tag: ''
 federate:
-  client_num: 200
+  client_num: 10
   data_weighted_aggr: false
   ignore_weight: false
   join_in_info: []
@@ -122,8 +122,8 @@ federate:
   online_aggr: false
   resource_info_file: ''
   restore_from: ''
-  sample_client_num: 50
-  sample_client_rate: 0.25
+  sample_client_num: 6
+  sample_client_rate: 0.6
   sampler: uniform
   save_to: ../federatedTrust/experiments/evaluation/model
   share_local_model: false
@@ -215,7 +215,7 @@ nbafl:
   mu: 0.0
   use: true
   w_clip: 1.0
-outdir: ../federatedTrust/experiments\evaluation
+outdir: ../federatedTrust/experiments\evaluation\sub_exp_20230802152403
 personalization:
   K: 5
   beta: 1.0
@@ -248,4 +248,3 @@ vertical:
   use: false
 wandb:
   use: false
-

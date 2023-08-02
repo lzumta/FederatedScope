@@ -16,8 +16,16 @@ git clone URL
 cd FederatedScope
 ```
 3. Install the dependencies
+
+editable mode
+
 ```
-pip3 install -r requirements.txt
+pip install -e .
+```
+Or (developers for dev mode)
+```
+pip install -e .[dev]
+pre-commit install
 ```
 ## Example use-case
 1. Change the directory to FederatedTrust
@@ -241,25 +249,30 @@ Running big federations with lots of training rounds and clients can be time-con
 With this feature, different configurations can be explored and their according trust score observed without actually running them. To parametrize the federation, set the wished metrics in the factsheet_template.json file at federatedTrust/configs. 
 
 ## Dependencies
+
+The dependencies are stored in the setup.py file: 
+- torchvision == 0.15.2 
 - adversarial-robustness-toolbox == 1.14.1
-- codecarbon == 2.2.1
-- dotmap == 1.3.30
-- numpy==1.22.4
-- scikit-learn==1.1.3
-- scipy==1.7.3
-- pandas==2.0.1
+- codecarbon == 2.2.1 
+- dotmap == 1.3.30 
+- numpy==1.22.4 
+- scipy==1.7.3 
+- pandas == 2.0.1 
 - hashids == 1.3.1
-- grpcio==1.55.0
-- grpcio-tools
-- protobuf == 3.20.3
-- pympler == 1.0.1
-- pyyaml==6.0
-- fvcore
+- grpcio==1.55.0 
+- grpcio- tools 
+- protobuf == 3.20.3 
+- pympler == 1.0.1 
+- pyyaml==6.0 
+- fvcore 
 - iopath
-- wandb==0.15.3
-- shap == 0.41.0
-- tabulate == 0.9.0
+- wandb==0.15.3 
+- scikit-learn == 1.1.3 
+- scipy ==1.7.3 
+- shap == 0.41.0 
+- tabulate == 0.9.0 
 - tensorboard
 - tensorboardX
 - tensorflow == 2.12.0
 - torch == 2.0.1
+- pympler 
