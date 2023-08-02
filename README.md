@@ -9,7 +9,7 @@ A big thanks and credits go to the developers of these two preliminary works tha
 ## Installation
 1. Clone the repository with git clone
 ```
-git clone URL
+git clone https://github.com/lzumta/FederatedScope.git
 ```
 2. Change the directory
 ```
