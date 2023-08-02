@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 import shutil
 from json import JSONDecodeError
@@ -60,8 +61,13 @@ class TrustMetricManager:
     def check_field_filled(self, factsheet_dict, factsheet_path, value, empty=""):
         if factsheet_dict[factsheet_path[0]][factsheet_path[1]]:
             return factsheet_dict[factsheet_path[0]][factsheet_path[1]]
-        elif value != empty:
-            return value
+        elif value != "" and value != 'nan':
+            if type(value) != str and type(value) != list:
+                if math.isnan(value):
+                    return 0
+                else: return value
+            else:
+                return value
         else:
             return empty
 
@@ -166,14 +172,14 @@ class TrustMetricManager:
                         logger.info("FactSheet: Populating class distribution results")
                         class_samples_sizes = [x for x in class_distribution.values() if type(x) == int]
                         class_imbalance = get_cv(list=class_samples_sizes)
-                        factsheet['fairness']['class_imbalance'] = self.check_field_filled(factsheet, ['fairness','class_imbalance'],1 if class_imbalance > 1 else class_imbalance, "")
+                        factsheet['fairness']['class_imbalance'] = self.check_field_filled(factsheet, ['fairness','class_imbalance'],1 if class_imbalance > 1 else class_imbalance, 0)
 
                     client_selection = status["client_selection"]
                     if client_selection is not None:
                         logger.info("FactSheet: Populating client selection results")
                         selections = [x for x in client_selection.values() if type(x) in [int, float]]
                         selection_cv = get_cv(list=selections)
-                        factsheet['fairness']['selection_cv'] = self.check_field_filled(factsheet, ['fairness','selection_cv'],1 if selection_cv > 1 else selection_cv, "")
+                        factsheet['fairness']['selection_cv'] = self.check_field_filled(factsheet, ['fairness','selection_cv'],1 if selection_cv > 1 else selection_cv, 0)
 
                     entropy_distribution = status["entropy_distribution"]
                     if entropy_distribution is not None:
@@ -301,7 +307,7 @@ class TrustMetricManager:
             for key, value in metrics:
                 pillar = TrustPillar(key, value, input_docs, use_weights)
                 score, result = pillar.evaluate()
-                weight = weights.get(key, avg_weight) if use_weights else avg_weight;
+                weight = 1/7
                 final_score += weight * score
                 result_print.append([key, score])
                 result_json["pillars"].append(result)

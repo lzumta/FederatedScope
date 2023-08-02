@@ -183,9 +183,9 @@ def get_feature_importance_cv(test_sample, model, cfg):
                 cv = variation(abs_sums)
     except Exception as e:
         logger.warning("Could not compute feature importance CV with shap")
-        cv = 0
+        cv = 1
     if math.isnan(cv):
-        cv = 0
+        cv = 1
     return cv
 
 

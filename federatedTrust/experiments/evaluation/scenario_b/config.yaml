@@ -92,7 +92,7 @@ early_stop:
   the_smaller_the_better: true
 eval:
   best_res_update_round_wise_key: val_loss
-  count_flops: false
+  count_flops: true
   freq: 10
   metrics:
   - acc
@@ -111,7 +111,7 @@ eval:
 expname: evaluation
 expname_tag: ''
 federate:
-  client_num: 10
+  client_num: 200
   data_weighted_aggr: false
   ignore_weight: false
   join_in_info: []
@@ -122,12 +122,12 @@ federate:
   online_aggr: false
   resource_info_file: ''
   restore_from: ''
-  sample_client_num: 10
-  sample_client_rate: 1.0
+  sample_client_num: 50
+  sample_client_rate: 0.25
   sampler: uniform
   save_to: ../federatedTrust/experiments/evaluation/model
   share_local_model: false
-  total_round_num: 2
+  total_round_num: 10
   unseen_clients_rate: 0.0
   use_diff: false
   use_ss: false
@@ -215,7 +215,7 @@ nbafl:
   mu: 0.0
   use: true
   w_clip: 1.0
-outdir: ../federatedTrust/experiments\evaluation\sub_exp_20230801231151
+outdir: ../federatedTrust/experiments\evaluation\evaluation\sub_exp_20230802173723
 personalization:
   K: 5
   beta: 1.0
